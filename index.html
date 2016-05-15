@@ -17,26 +17,27 @@
 
 	<body>
 
-		<div class="container">
-
-			<div class="row">
+		<div ng-controller="MainCtrl">
 
 				<h3>AngularJS dynamic ebook wizard</h3>
 
 				<hr/>
 
-				<div ng-controller="MainCtrl">
 				<div class="row">
+				<div class="col-md-12">
 				<div class="col-md-2">
 				<ul class="nav nav-pills nav-stacked" >
 				<li data-ng-repeat="chp in chps">
-						<select>
+					<a ng-hide="chp.editing" ng-dblclick="editItem(chp)" ng-click="editChp(chp)" href=""><em>{{chp.type}}</em>: <strong>{{chp.title}}</strong></a>
+<div ng-show="chp.editing">
+						<select ng-model="chp.type">
 				         <option>Chapter</option>
 				         <option>Author page</option>
 				         <option>Preface</option>
 						 <option>Epilogue</option>
 				      </select>
-				<input id="tit{{chp.id}}" type="text" class="kanni-enabled" my-lang ng-model="chp.title" name="" placeholder="Enter the title"></input>
+				<input id="tit{{chp.id}}" type="text" class="kanni-enabled" my-lang ng-model="chp.title" ng-blur="doneEditing(chp)" name="" placeholder="Enter the title" autofocus></input>
+			</div>
 				</li>
 				</ul>
 				<button class="btn btn-warning addfields" ng-click="addNewchp()">Add New</button>
@@ -48,28 +49,26 @@
 				</div>
 								<div class="col-md-10">
 
-				   <fieldset data-ng-repeat="chp in chps" on-last-repeat>
-
+				  <fieldset data-ng-repeat="chp in chps" on-last-repeat ng-show="chp.edit">
 					  <a>{{chp.title}}</a>
 					  <form>
 						<textarea id="cont{{chp.id}}" class="kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" rows="10"></textarea>
 						</form>
 							<markdown bind-from="chp.content"></markdown>
 
-				      <button class="remove" ng-show="$last" ng-click="removechp()">-</button>
+				      <!--<button class="remove" ng-click="removechp()">-</button> -->
 
 				   </fieldset>
 				   </div></div>
 
+				 </div>
 
 
-
-				   <div id="chpsDisplay" >
+				   <div id="chpsDisplay">
 				      {{ chps }}
 				   </div>
-				</div>
 
-			</div>
+
 
 		</div>
 

@@ -58,23 +58,42 @@ var app = angular.module('saptha', ['underscore'])
   $scope.chps = [];
   	//$scope.textarea = '**Welcome, I am some Bold Markdown text**';
     		$scope.chps.content = 'I am *ready* to be edited!';
-
+        $scope.editItem = function (chp) {
+             chp.editing = true;
+             $('#tit'+chp.id).focus();
+         };
+         $scope.editChp = function (chp) {
+           _.each($scope.chps, function(item){ item.edit = false;});
+              chp.edit = true;
+            //  $('#cont'+chp.id).focus();
+          };
+         $scope.doneEditing = function (chp) {
+             chp.editing = false;
+             //dong some background ajax calling for persistence...
+         };
   $scope.addNewchp = function() {
 
     var newItemNo = $scope.chps.length+1;
 	$scope.newitem = newItemNo;
-    $scope.chps.push({'id':'chp'+newItemNo});
-
+  _.each($scope.chps, function(item){ item.edit = false;});
+    $scope.chps.push({'id':'chp'+newItemNo, 'edit': true, 'editing': true, 'type': "Chapter"});
 	$scope.$on('onRepeatLast', function(scope, element, attrs){
           //work your magic
 		   var node = document.getElementById('titchp'+$scope.newitem);
 	 Kanni.enableNode(node);
 	 var node = document.getElementById('contchp'+$scope.newitem);
 	 Kanni.enableNode(node);
+    $('#contchp'+$scope.newitem).markdown();
+    $('#titchp'+$scope.newitem).focus();
+  });
 
+};
+
+
+/*
 	 $('#contchp'+$scope.newitem).markdown({
   additionalButtons: [
-  /*
+
 	 [{
           name: "groupcustom",
           data: [{
@@ -106,7 +125,7 @@ var app = angular.module('saptha', ['underscore'])
             }
           }]
     }]
-	*/
+
   ]
 });
 
@@ -116,7 +135,7 @@ var app = angular.module('saptha', ['underscore'])
 
 
   };
-
+*/
   $scope.removechp = function() {
     var lastItem = $scope.chps.length-1;
     if ( lastItem !== 0)
