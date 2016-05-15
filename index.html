@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<html ng-app="saptha">
+	<head>
+		<!--[if IE]>
+	      	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	      <![endif]-->
+	    <title>Saptha | AngularJS dynamic ebook wizard</title>
+
+
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"></link>
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"></link>
+		<link rel="stylesheet" type="text/css" href="css/style.css"></link>
+				<link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css"></link>
+
+	</head>
+
+	<body>
+
+		<div class="container">
+
+			<div class="row">
+
+				<h3>AngularJS dynamic ebook wizard</h3>
+
+				<hr/>
+
+				<div ng-controller="MainCtrl">
+				<div class="row">
+				<div class="col-md-2">
+				<ul class="nav nav-pills nav-stacked" >
+				<li data-ng-repeat="chp in chps">
+						<select>
+				         <option>Chapter</option>
+				         <option>Author page</option>
+				         <option>Preface</option>
+						 <option>Epilogue</option>
+				      </select>
+				<input id="tit{{chp.id}}" type="text" class="kanni-enabled" my-lang ng-model="chp.title" name="" placeholder="Enter the title"></input>
+				</li>
+				</ul>
+				<button class="btn btn-warning addfields" ng-click="addNewchp()">Add New</button>
+				 <label class="checkbox">
+      <input name="publish" type="checkbox"> Publish </input>
+    </label>
+    <hr/>
+    <button type="submit" class="btn btn-success">Save</button>
+				</div>
+								<div class="col-md-10">
+
+				   <fieldset data-ng-repeat="chp in chps" on-last-repeat>
+
+					  <a>{{chp.title}}</a>
+					  <form>
+						<textarea id="cont{{chp.id}}" class="kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" rows="10"></textarea>
+						</form>
+							<markdown bind-from="chp.content"></markdown>
+
+				      <button class="remove" ng-show="$last" ng-click="removechp()">-</button>
+
+				   </fieldset>
+				   </div></div>
+
+
+
+
+				   <div id="chpsDisplay" >
+				      {{ chps }}
+				   </div>
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+		<div class="footer">
+	    	<div class="container">
+	        	<p class="row text-muted">Copyright <script>document.write(new Date().getFullYear())</script>, <a href="https://www.magicauthor.com/">magicauthor.com</a></p>
+	    	</div>
+	    </div>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+				<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+				 <script src="js/markdown.js"></script>
+					<script src="js/to-markdown.js"></script>
+					<script src="js/Markdown.Converter.js"></script>
+	<script src="js/Markdown.Sanitizer.js"></script>
+				<script type="text/javascript" src="js/bootstrap-markdown.js"></script>
+				<script type="text/javascript" src="kanni/kanni.js"></script>
+<script type="text/javascript" src="kanni/lang/bengali.js"></script>
+<script type="text/javascript" src="kanni/lang/gujarati.js"></script>
+<script type="text/javascript" src="kanni/lang/hindi.js"></script>
+<script type="text/javascript" src="kanni/lang/kannada.js"></script>
+<script type="text/javascript" src="kanni/lang/malayalam.js"></script>
+<script type="text/javascript" src="kanni/lang/oriya.js"></script>
+<script type="text/javascript" src="kanni/lang/punjabi.js"></script>
+<script type="text/javascript" src="kanni/lang/tamil.js"></script>
+<script type="text/javascript" src="kanni/lang/telugu.js"></script>
+<script type="text/javascript" src="js/underscore.js"></script>
+				<script type="text/javascript" src="js/script.js"></script>
+	</body>
+
+</html>
