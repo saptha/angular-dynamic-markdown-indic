@@ -9,9 +9,13 @@ Currently supports the following features:
 - Text area with [Toopay's](https://github.com/toopay/bootstrap-markdown) Markdown editor
 - [Indic script](https://github.com/vinoth3v/Kanni) (a third party JS) plugin to write in Indian regional languages.
 - Live preview based on [markdown-editpreview-ng.js](https://github.com/codemwnci/markdown-editpreview-ng.js)
-- Clickable navigation interface similar to Plnkr
+- Clickable navigation interface similar to Plnkr. Reference: https://github.com/blackgate/bg-splitter
+- Disabled full screen mode
+- Make side Preview within a box similar Plnkr.co/edit
+
 
 Things to do:
-
 - Auto save feature
 - Feature to Delete any Chapter
+- Ask confirmation before closing the window
+- Need to plugin [Bindonce](https://github.com/Pasvaz/bindonce) for high performance binding

@@ -15,72 +15,78 @@
 
 	</head>
 
-	<body>
+	<body id="sapthabody">
 
-		<div ng-controller="MainCtrl">
+		<div id="Sapthaelement" ng-controller="MainCtrl">
 
-				<h3>AngularJS dynamic ebook wizard</h3>
+				<!--<h3>AngularJS dynamic ebook wizard</h3>
 
-				<hr/>
+				<hr/>-->
 
-				<div class="row">
-				<div class="col-md-12">
-				<div class="col-md-2">
-				<ul class="nav nav-pills nav-stacked" >
-				<li data-ng-repeat="chp in chps">
-					<a ng-hide="chp.editing" ng-dblclick="editItem(chp)" ng-click="editChp(chp)" href=""><em>{{chp.type}}</em>: <strong>{{chp.title}}</strong></a>
-<div ng-show="chp.editing">
-						<select ng-model="chp.type">
-				         <option>Chapter</option>
-				         <option>Author page</option>
-				         <option>Preface</option>
-						 <option>Epilogue</option>
-				      </select>
-				<input id="tit{{chp.id}}" type="text" class="kanni-enabled" my-lang ng-model="chp.title" ng-blur="doneEditing(chp)" name="" placeholder="Enter the title" autofocus></input>
-			</div>
-				</li>
-				</ul>
-				<button class="btn btn-warning addfields" ng-click="addNewchp()">Add New</button>
-				 <label class="checkbox">
-      <input name="publish" type="checkbox"> Publish </input>
-    </label>
-    <hr/>
-    <button type="submit" class="btn btn-success">Save</button>
+				<div class="row" style="margin-top: 5px;">
+					<bg-splitter orientation="horizontal">
+    <bg-pane min-size="150" style="width: 25%;">
+      <bg-splitter orientation="vertical">
+        <bg-pane id="chpnvg" min-size="50">
+					<ul class="nav nav-pills nav-stacked" style="margin: 10px;">
+					<li data-ng-repeat="chp in chps">
+						<a ng-hide="chp.editing" ng-dblclick="editItem(chp)" ng-click="editChp(chp)" href=""><em>{{chp.type}}</em>: <strong>{{chp.title}}</strong></a>
+	<div ng-show="chp.editing">
+							<select ng-model="chp.type">
+					         <option>Chapter</option>
+					         <option>Author page</option>
+					         <option>Preface</option>
+							 <option>Epilogue</option>
+					      </select>
+					<input id="tit{{chp.id}}" type="text" class="kanni-enabled" my-lang ng-model="chp.title" ng-blur="doneEditing(chp)" name="" placeholder="Enter the title" autofocus></input>
 				</div>
-								<div class="col-md-10">
-
-				  <fieldset data-ng-repeat="chp in chps" on-last-repeat ng-show="chp.edit">
-					  <a>{{chp.title}}</a>
-					  <form>
-						<textarea id="cont{{chp.id}}" class="kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" rows="10"></textarea>
-						</form>
-							<markdown bind-from="chp.content"></markdown>
-
-				      <!--<button class="remove" ng-click="removechp()">-</button> -->
-
-				   </fieldset>
-				   </div></div>
-
+					</li>
+					</ul>
+				</bg-pane>
+        <bg-pane min-size="200">
+					<button class="btn btn-warning addfields" style="margin: 10px;" ng-click="addNewchp()">Add New</button>
+					 <label class="checkbox" style="margin: 10px;">
+				<input name="publish" type="checkbox"> Publish </input>
+			</label>
+			<hr/>
+			<button type="submit" class="btn btn-success" style="margin: 10px;">Save</button>
+				</bg-pane>
+      </bg-splitter>
+    </bg-pane>
+		<bg-pane min-size="150">
+				<fieldset data-ng-repeat="chp in chps" on-last-repeat ng-show="chp.edit">
+					<bg-splitter orientation="mainhorz">
+				<bg-pane min-size="100" ng-class="class">
+					<form id="origform" class="orgform">
+					<textarea id="cont{{chp.id}}" class="orgtext kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" ></textarea>
+			</form>
+				</bg-pane>
+				<bg-pane min-size="100" ng-show="liveprvw">
+					<div id="prvwform">
+						<div class="row text-center">  <em>{{chp.type}}</em> <br><strong>{{chp.title}}</strong> <br> </div>
+						<div id="mrkdwn"> <markdown bind-from="chp.content"></markdown>  </div>
+					</div>
+				</bg-pane>
+			</bg-splitter>
+			</fieldset>
+		</bg-pane>
+</bg-splitter>
 				 </div>
-
-
-				   <div id="chpsDisplay">
+				  <!-- <div id="chpsDisplay">
 				      {{ chps }}
-				   </div>
-
-
-
+				   </div> -->
 		</div>
 
 
 
-		<div class="footer">
+	<!--	<div class="footer">
 	    	<div class="container">
 	        	<p class="row text-muted">Copyright <script>document.write(new Date().getFullYear())</script>, <a href="https://www.magicauthor.com/">magicauthor.com</a></p>
 	    	</div>
-	    </div>
+	    </div>  -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+			<!--	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
 				<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 				 <script src="js/markdown.js"></script>
 					<script src="js/to-markdown.js"></script>
@@ -99,6 +105,7 @@
 <script type="text/javascript" src="kanni/lang/telugu.js"></script>
 <script type="text/javascript" src="js/underscore.js"></script>
 				<script type="text/javascript" src="js/script.js"></script>
+				<script src="js/splitter.js"></script>
 	</body>
 
 </html>

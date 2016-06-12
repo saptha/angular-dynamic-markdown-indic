@@ -37,8 +37,8 @@
   var Markdown = function (element, options) {
     // @TODO : remove this BC on next major release
     // @see : https://github.com/toopay/bootstrap-markdown/issues/109
-    var opts = ['autofocus', 'savable', 'hideable', 'width', 
-      'height', 'resize', 'iconlibrary', 'language', 
+    var opts = ['autofocus', 'savable', 'hideable', 'width',
+      'height', 'resize', 'iconlibrary', 'language',
       'footer', 'fullscreen', 'hiddenButtons', 'disabledButtons'];
     $.each(opts,function(_, opt){
       if (typeof $(element).data(opt) !== 'undefined') {
@@ -227,11 +227,21 @@
         $textarea = this.$textarea;
 
     if (mode === true) {
+      if ($(".orgform.col-sm-5")[0]){
+        $editor.addClass('md-fullscreen-mode md-split-mode');
+      }
+      else {
       $editor.addClass('md-fullscreen-mode');
+    }
       $('body').addClass('md-nooverflow');
       this.$options.onFullscreen(this);
     } else {
-      $editor.removeClass('md-fullscreen-mode');
+      if ($(".orgform.col-sm-5")[0]){
+        $editor.removeClass('md-fullscreen-mode md-split-mode');
+      }
+      else {
+        $editor.removeClass('md-fullscreen-mode');
+    }
       $('body').removeClass('md-nooverflow');
       this.$options.onFullscreenExit(this);
 
@@ -273,7 +283,7 @@
         if (options.additionalButtons.length > 0) {
           // iterate the additional button groups
           $.each(options.additionalButtons[0], function(idx, buttonGroup){
-            
+
             // see if the group name of the addional group matches an existing group
             var matchingGroups = $.grep(allBtnGroups, function(allButtonGroup, allIdx){
               return allButtonGroup.name === buttonGroup.name;
@@ -282,12 +292,12 @@
             // if it matches add the addional buttons to that group, if not just add it to the all buttons group
             if(matchingGroups.length > 0) {
               matchingGroups[0].data = matchingGroups[0].data.concat(buttonGroup.data);
-            } else {              
+            } else {
               allBtnGroups.push(options.additionalButtons[0][idx]);
             }
 
           });
-        } 
+        }
 
         // Reduce and/or reorder the button groups
         if (options.reorderButtonGroups.length > 0) {
@@ -527,7 +537,7 @@
         // @see https://github.com/toopay/bootstrap-markdown/issues/170
         return this;
       }
-      
+
       // Give flag that tell the editor enter preview mode
       this.$isPreview = true;
       // Disable all buttons
@@ -1318,6 +1328,12 @@
 
             if (isPreview === false) {
               // Give flag that tell the editor enter preview mode
+              if ($(".orgform.col-sm-5")[0]){
+                $('.md-editor').removeClass('md-split-mode');
+                $('.orgform').removeClass('col-sm-5');
+              }
+              angular.element('#Sapthaelement').scope().toggleCustom();
+              angular.element('#Sapthaelement').scope().$apply();
               e.showPreview();
             } else {
               e.hidePreview();
@@ -1332,7 +1348,7 @@
     disabledButtons:[], // Default disabled buttons
     footer: '',
     fullscreen: {
-      enable: true,
+      enable: false,
       icons: {
         fullscreenOn: {
           fa: 'fa fa-expand',

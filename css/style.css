@@ -1,15 +1,10 @@
-
+/*
 
 *{
     font-family: arial;
     font-size: 13px;
 }
-
-fieldset{
-    background: #FCFCFC;
-    padding: 16px;
-    border: 1px solid #D5D5D5;
-}
+*/
 .addfields{
     margin: 10px 0;
 }
@@ -35,4 +30,153 @@ fieldset{
 input[type="text"],
 select{
     padding:5px;
+}
+.md-editor.md-split-mode {
+  width: 50% !important;
+}
+.md-split-mode {
+  width: 50% !important;
+}
+.orgform {
+  height: 100% !important;
+  /*padding-right: 20px;*/
+}
+#origform {
+  padding-left: 0px !important;
+  padding-right: 5px !important;
+}
+#prvwform {
+  /*border: 1px solid #eee;*/
+  margin-bottom: 20px;
+  padding-right: 10px !important;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  height: calc(100% - 3rem) !important
+}
+#mrkdwn {
+/*  min-height: 602px;
+  max-height: 602px; */
+  overflow: auto;
+  padding-bottom: 40px;
+  height: calc(100% - 3rem) !important
+}
+#chpnvg {
+ overflow: auto;
+ max-height: 500px;
+}
+.orgtext {
+  height: calc(100% - 1rem) !important;
+}
+#sapthabody {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.split-panes
+{
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+}
+
+.split-panes > .split-handler
+{
+  background: transparent;
+  position: absolute;
+  z-index: 999;
+}
+
+/* Horizontal */
+
+.split-panes.horizontal > .split-handler
+{
+  width: 4px;
+  top: 0px;
+  left: 25%;
+  bottom: 0px;
+  cursor: ew-resize;
+}
+
+.split-panes.horizontal > .split-pane1,
+.split-panes.horizontal > .split-pane2
+{
+  position: absolute;
+  height: 100%;
+}
+
+.split-panes.horizontal > .split-pane1
+{
+  width: 25%;
+}
+
+.split-panes.horizontal > .split-pane2
+{
+  left: 25%;
+  right: 0px;
+  border-left: 1px solid #aaa;
+}
+
+
+/* Vertical */
+
+.split-panes.vertical > .split-handler
+{
+  height: 4px;
+  top: 75%;
+  left: 0px;
+  right: 0px;
+  cursor: ns-resize;
+}
+
+.split-panes.vertical > .split-pane1,
+.split-panes.vertical > .split-pane2
+{
+  position: absolute;
+  width: 100%;
+}
+
+.split-panes.vertical > .split-pane1
+{
+  height: 75%;
+}
+
+.split-panes.vertical > .split-pane2
+{
+  top: 75%;
+  bottom: 0px;
+  border-top: 1px solid #aaa;
+}
+.md-fullmode
+{
+  width: 100% !important;
+}
+/* Horizontal */
+
+.split-panes.mainhorz > .split-handler
+{
+  width: 4px;
+  top: 0px;
+  left: 50%;
+  bottom: 0px;
+  cursor: ew-resize;
+}
+
+.split-panes.mainhorz > .split-pane1,
+.split-panes.mainhorz > .split-pane2
+{
+  position: absolute;
+  height: 100%;
+}
+
+.split-panes.mainhorz > .split-pane1
+{
+  width: 50%;
+}
+
+.split-panes.mainhorz > .split-pane2
+{
+  left: 50%;
+  right: 0px;
+  border-left: 1px solid #aaa;
 }
