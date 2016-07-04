@@ -180,3 +180,18 @@ select{
   right: 0px;
   border-left: 1px solid #aaa;
 }
+.nav-pills > li .close {
+			  display: none;
+			}
+.nav-pills > li:hover .close {
+          display: block;
+			    margin: -2px 0 0 10px;
+          font-size: 18px;
+        }
+.nav-pills > li:hover .close:hover {
+    color: red;
+			}
+.del-btn {
+    top: 0;
+    left: 100%;
+    }

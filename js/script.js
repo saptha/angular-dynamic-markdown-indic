@@ -3,7 +3,7 @@ underscore.factory('_', function() {
   return window._; //Underscore must already be loaded on the page
 });
 
-var app = angular.module('saptha', ['underscore','bgDirectives'])
+var app = angular.module('saptha', ['underscore','bgDirectives','angularModalService'])
 		    .directive('onLastRepeat', function() {
         return function(scope, element, attrs) {
             if (scope.$last) setTimeout(function(){
@@ -50,12 +50,10 @@ var app = angular.module('saptha', ['underscore','bgDirectives'])
     };
   }]);
 
+  app.controller('MainCtrl', ['$scope', '_', 'ModalService', function($scope, _, ModalService) {
 
-  app.controller('MainCtrl', ['$scope', '_', function($scope, _) {
-		init = function() {
-           _.keys($scope);
-       }
-  $scope.chps = [];
+  //$scope.chps = [{'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"}];
+   $scope.chps = [];
   	//$scope.textarea = '**Welcome, I am some Bold Markdown text**';
     		$scope.chps.content = 'I am *ready* to be edited!';
         $scope.editItem = function (chp) {
@@ -69,6 +67,29 @@ var app = angular.module('saptha', ['underscore','bgDirectives'])
               //$scope.liveprvw = true;
 
             //  $('#cont'+chp.id).focus();
+          };
+          $scope.delChp = function (chp) {
+          //  window.alert("Really?");
+          ModalService.showModal({
+    templateUrl: 'yesno.html',
+    controller: "YesNoController",
+    inputs: {
+   title: chp.title,
+   id: chp.id
+ }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result) {
+      $scope.yesNoResult = result ? "You said Yes" : "You said No";
+      if (result)
+      {
+      $scope.chps = _.filter($scope.chps, function(chap) {
+      return chap.id != chp.id;
+      });
+         _.each($scope.chps, function(item, i){ item.id = 'chp'+(i+1);});
+    }
+    });
+  });
           };
          $scope.doneEditing = function (chp) {
              chp.editing = false;
@@ -229,6 +250,56 @@ var app = angular.module('saptha', ['underscore','bgDirectives'])
     $scope.chps.splice(lastItem);
   }
   };
+  $("[data-toggle=tooltip]").tooltip();
+  init = function() {
+         _.keys($scope);
+        // $scope.chps = [{'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"}];
+/*
+        if ($scope.chps.length == 0)
+        {
+          $scope.newitem = 1;
+          $scope.liveprvw = true;
+          $scope.class= "";
+         $scope.chps.push({'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"});
+         $scope.$on('onRepeatLast', function(scope, element, attrs){
+                  //work your magic
+              var node = document.getElementById('titchp1');
+          Kanni.enableNode(node);
+          var node = document.getElementById('contchp1');
+          Kanni.enableNode(node);
+           $('#titchp1').focus();
+           $('textarea').markdown({
+          additionalButtons: [
+           [{
+                  name: "groupcustom",
+                  data: [{
+                    name: "livepreview",
+                    toggle: true, // this param only take effect if you load bootstrap.js
+                    title: "Live Preview",
+                    icon: "fa fa-eye",
+                    callback: function (e) {
+           angular.element('#Sapthaelement').scope().toggleCustom();
+           angular.element('#Sapthaelement').scope().$apply();
+       }
+     }]
+}]
+
+]
+});
+});
+       }
+       */
+     }
 
   init();
 }]);
+
+app.controller('YesNoController', function($scope, title, id, close) {
+
+  $scope.mtitle = title;
+   $scope.mid = id;
+  $scope.close = function(result) {
+    close(result, 500); // close, but give 500ms for bootstrap to animate
+  };
+
+});

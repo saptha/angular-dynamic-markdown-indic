@@ -30,7 +30,11 @@
         <bg-pane id="chpnvg" min-size="50">
 					<ul class="nav nav-pills nav-stacked" style="margin: 10px;">
 					<li data-ng-repeat="chp in chps">
-						<a ng-hide="chp.editing" ng-dblclick="editItem(chp)" ng-click="editChp(chp)" href=""><em>{{chp.type}}</em>: <strong>{{chp.title}}</strong></a>
+						<a ng-hide="chp.editing" ng-dblclick="editItem(chp)" ng-click="editChp(chp)" href="">
+							<em>{{chp.type}}</em>: <strong>{{chp.title}}</strong>
+							<button class="btn close" type="button" ng-click="delChp(chp)" data-toggle="tooltip" data-placement="right" title="Delete this chapter">
+								x</button>
+						</a>
 	<div ng-show="chp.editing">
 							<select ng-model="chp.type">
 					         <option>Chapter</option>
@@ -49,11 +53,20 @@
 				<input name="publish" type="checkbox"> Publish </input>
 			</label>
 			<hr/>
+			 <!-- <div id="chpsDisplay">
+					{{ chps }}
+			 </div> -->
 			<button type="submit" class="btn btn-success" style="margin: 10px;">Save</button>
 				</bg-pane>
       </bg-splitter>
     </bg-pane>
 		<bg-pane min-size="150">
+			<div ng-hide="chps.length">
+				<br><br><br>
+				<div class="col-md-3 col-md-offset-3">
+			<button class="btn btn-lg btn-success addfields" style="margin: 10px;" ng-click="addNewchp()">Create a fresh chapter</button>
+		</div>
+		</div>
 				<fieldset data-ng-repeat="chp in chps" on-last-repeat ng-show="chp.edit">
 					<bg-splitter orientation="mainhorz">
 				<bg-pane min-size="100" ng-class="class">
@@ -85,7 +98,9 @@
 	    	</div>
 	    </div>  -->
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+	<!--	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script> -->
+		<script src="https://code.angularjs.org/1.4.9/angular.min.js"></script>
+		<script src="https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.js"></script>
 			<!--	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
 				<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 				 <script src="js/markdown.js"></script>
@@ -106,6 +121,25 @@
 <script type="text/javascript" src="js/underscore.js"></script>
 				<script type="text/javascript" src="js/script.js"></script>
 				<script src="js/splitter.js"></script>
+				<script type="text/ng-template" id="yesno.html">
+					<div class="modal fade">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true">&times;</button>
+				        <h4 class="modal-title">Delete the chapter {{mtitle}}?</h4>
+				      </div>
+				      <div class="modal-body">
+				        <p>It's your call...</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">No</button>
+				        <button type="button" ng-click="close(true)" class="btn btn-primary" data-dismiss="modal">Yes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				</script>
 	</body>
 
 </html>

@@ -12,10 +12,11 @@ Currently supports the following features:
 - Clickable navigation interface similar to Plnkr. Reference: https://github.com/blackgate/bg-splitter
 - Disabled full screen mode
 - Make side Preview within a box similar Plnkr.co/edit
+- Feature to Delete any Chapter
 
 
 Things to do:
 - Auto save feature
-- Feature to Delete any Chapter
 - Ask confirmation before closing the window
 - Need to plugin [Bindonce](https://github.com/Pasvaz/bindonce) for high performance binding
+- Need to download css and js files locally
