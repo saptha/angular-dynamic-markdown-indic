@@ -3,7 +3,12 @@ underscore.factory('_', function() {
   return window._; //Underscore must already be loaded on the page
 });
 
-var app = angular.module('saptha', ['underscore','bgDirectives','angularModalService'])
+var app = angular.module('saptha', ['underscore','bgDirectives','angularModalService', 'LocalStorageModule'])
+        .config(function(localStorageServiceProvider){
+          localStorageServiceProvider.setPrefix('trtitle');
+          // localStorageServiceProvider.setStorageCookieDomain('example.com');
+         localStorageServiceProvider.setStorageType('localStorage');
+        })
 		    .directive('onLastRepeat', function() {
         return function(scope, element, attrs) {
             if (scope.$last) setTimeout(function(){
@@ -28,6 +33,24 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
     }
   }
 })
+.directive('confirmOnExit', function() {
+    return {
+        link: function($scope, elem, attrs) {
+            window.onbeforeunload = function(){
+                if ($scope.formchp.$dirty) {
+                    return "The form is dirty, do you want to stay on the page?";
+                }
+            }
+            $scope.$on('$locationChangeStart', function(event, next, current) {
+                if ($scope.formchp.$dirty) {
+                    if(!confirm("The form is dirty, do you want to stay on the page?")) {
+                        event.preventDefault();
+                    }
+                }
+            });
+        }
+    };
+})
  .directive('markdown', ['$window', '$sce', function($window, $sce) {
     var converter = $window.Markdown.getSanitizingConverter();
 
@@ -50,12 +73,47 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
     };
   }]);
 
-  app.controller('MainCtrl', ['$scope', '_', 'ModalService', function($scope, _, ModalService) {
+  app.controller('MainCtrl', ['$scope', '_', 'ModalService', 'localStorageService', function($scope, _, ModalService, localStorageService) {
+    init = function() {
+           _.keys($scope);
+       }
 
-  //$scope.chps = [{'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"}];
-   $scope.chps = [];
+     $scope.chps = localStorageService.get('chps') ? localStorageService.get('chps') : [];
+     $scope.liveprvw = true;
+
+$scope.$watch('chps', function(value){
+  if (angular.isUndefined(value) || value == null)
+     { console.log('Its undefined. Setting to empty array'); value = [];}
+  localStorageService.set('chps',value);
+},true);
+/*
+ $scope.storageType = 'Local storage';
+
+ if (localStorageService.getStorageType().indexOf('session') >= 0) {
+   $scope.storageType = 'Session storage';
+ }
+
+ if (!localStorageService.isSupported) {
+   $scope.storageType = 'Cookie';
+ }
+
+
+ $scope.$watch(function(){
+   return localStorageService.get('chps');
+ }, function(value){
+if (angular.isUndefined(value) || value == null)
+   { console.log('Its undefined. Setting to empty array'); value=[];}
+
+    $scope.chps = value;
+ }, true);
+
+*/
+ $scope.clearAll = localStorageService.clearAll;
+
+   //$scope.book = {'trtitle':"", 'chps': [], 'cover': "", 'price': 0, 'blurb': ""}
+   //$scope.chps = $scope.book.chps;
   	//$scope.textarea = '**Welcome, I am some Bold Markdown text**';
-    		$scope.chps.content = 'I am *ready* to be edited!';
+    	//	$scope.chps.content = 'I am *ready* to be edited!';
         $scope.editItem = function (chp) {
              chp.editing = true;
              $('#tit'+chp.id).focus();
@@ -96,15 +154,6 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
              //dong some background ajax calling for persistence...
          };
          $scope.toggleCustom = function() {
-        //   $scope.class = $scope.class === "col-sm-6" ? "": "col-sm-6";
-        /*
-        if ($(".orgform.col-sm-6")[0]){
-          $scope.liveprvw = true;
-        }
-        else {
-          $scope.liveprvw = false;
-        }
-        */
           $scope.liveprvw = $scope.liveprvw === false ? true: false;
           if ($scope.liveprvw) {
             $scope.class = "";
@@ -128,10 +177,12 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
 	 var node = document.getElementById('contchp'+$scope.newitem);
 	 Kanni.enableNode(node);
    $('#titchp'+$scope.newitem).focus();
+     $('#contchp'+$scope.newitem).markdown();
 
   //  $('#contchp'+$scope.newitem).markdown();
   //  $('#titchp'+$scope.newitem).focus();
 
+/* commented for permanent preview solution
     $('#contchp'+$scope.newitem).markdown({
    additionalButtons: [
 
@@ -143,106 +194,19 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
              title: "Live Preview",
              icon: "fa fa-eye",
              callback: function (e) {
-               /*
-                 if ($(".orgform.col-sm-6")[0]){
-                   $('.md-editor').removeClass('md-split-mode');
-                   $('.orgform').removeClass('col-sm-6');
-                 }
-               else {
-                 $('.orgform').addClass('col-sm-6');
-                 $('.md-fullscreen-mode').addClass('md-split-mode');
-               }
-               */
-    angular.element('#Sapthaelement').scope().toggleCustom();
-    angular.element('#Sapthaelement').scope().$apply();
-}
-/*
-             callback: function(e, scope){
-               $scope.class = $scope.class === "col-sm-6" ? "": "col-sm-6";
-               $scope.liveprvw = $scope.liveprvw === false ? true: false;
-
-               // Replace selection with some drinks
-
-               var chunk, cursor,
-                   selected = e.getSelection(), content = e.getContent(),
-                   drinks = ["Heinekken", "Budweiser",
-                             "Iron City", "Amstel Light",
-                             "Red Stripe", "Smithwicks",
-                             "Westvleteren", "Sierra Nevada",
-                             "Guinness", "Corona", "Calsberg"],
-                   index = Math.floor((Math.random()*10)+1)
-
-
-               // Give random drink
-               chunk = drinks[index]
-
-               // transform selection and set the cursor into chunked text
-               e.replaceSelection(chunk)
-               cursor = selected.start
-
-               // Set the cursor
-               e.setSelection(cursor,cursor+chunk.length)
-
-             }
-*/
+                    angular.element('#Sapthaelement').scope().toggleCustom();
+                    angular.element('#Sapthaelement').scope().$apply();
+                  }
            }]
      }]
 
    ]
  });
 
-
+ commented for permanent preview solution */
        });
 };
 
-
-
-/*
-	 $('#contchp'+$scope.newitem).markdown({
-  additionalButtons: [
-
-	 [{
-          name: "groupcustom",
-          data: [{
-            name: "cmdBeer",
-            toggle: true, // this param only take effect if you load bootstrap.js
-            title: "Beer",
-            icon: "glyphicon glyphicon-glass",
-            callback: function(e){
-              // Replace selection with some drinks
-              var chunk, cursor,
-                  selected = e.getSelection(), content = e.getContent(),
-                  drinks = ["Heinekken", "Budweiser",
-                            "Iron City", "Amstel Light",
-                            "Red Stripe", "Smithwicks",
-                            "Westvleteren", "Sierra Nevada",
-                            "Guinness", "Corona", "Calsberg"],
-                  index = Math.floor((Math.random()*10)+1)
-
-
-              // Give random drink
-              chunk = drinks[index]
-
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection(chunk)
-              cursor = selected.start
-
-              // Set the cursor
-              e.setSelection(cursor,cursor+chunk.length)
-            }
-          }]
-    }]
-
-  ]
-});
-
-
-      });
-
-
-
-  };
-*/
   $scope.removechp = function() {
     var lastItem = $scope.chps.length-1;
     if ( lastItem !== 0)
@@ -251,45 +215,6 @@ var app = angular.module('saptha', ['underscore','bgDirectives','angularModalSer
   }
   };
   $("[data-toggle=tooltip]").tooltip();
-  init = function() {
-         _.keys($scope);
-        // $scope.chps = [{'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"}];
-/*
-        if ($scope.chps.length == 0)
-        {
-          $scope.newitem = 1;
-          $scope.liveprvw = true;
-          $scope.class= "";
-         $scope.chps.push({'id':'chp1', 'edit': true, 'editing': true, 'type': "Chapter"});
-         $scope.$on('onRepeatLast', function(scope, element, attrs){
-                  //work your magic
-              var node = document.getElementById('titchp1');
-          Kanni.enableNode(node);
-          var node = document.getElementById('contchp1');
-          Kanni.enableNode(node);
-           $('#titchp1').focus();
-           $('textarea').markdown({
-          additionalButtons: [
-           [{
-                  name: "groupcustom",
-                  data: [{
-                    name: "livepreview",
-                    toggle: true, // this param only take effect if you load bootstrap.js
-                    title: "Live Preview",
-                    icon: "fa fa-eye",
-                    callback: function (e) {
-           angular.element('#Sapthaelement').scope().toggleCustom();
-           angular.element('#Sapthaelement').scope().$apply();
-       }
-     }]
-}]
-
-]
-});
-});
-       }
-       */
-     }
 
   init();
 }]);

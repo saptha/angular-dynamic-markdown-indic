@@ -13,10 +13,10 @@ Currently supports the following features:
 - Disabled full screen mode
 - Make side Preview within a box similar Plnkr.co/edit
 - Feature to Delete any Chapter
+- Auto save feature
 
 
 Things to do:
-- Auto save feature
-- Ask confirmation before closing the window
+- Ask confirmation before closing the window; ask only if the page is not saved.
 - Need to plugin [Bindonce](https://github.com/Pasvaz/bindonce) for high performance binding
-- Need to download css and js files locally
+- Title wise segregation

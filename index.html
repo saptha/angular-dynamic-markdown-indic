@@ -8,11 +8,30 @@
 	    <title>Saptha | AngularJS dynamic ebook wizard</title>
 
 
-		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"></link>
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"></link>
+		<link href="css/bootstrap.min.css" rel="stylesheet"></link>
+		<link href="css/font-awesome.css" rel="stylesheet"></link>
 		<link rel="stylesheet" type="text/css" href="css/style.css"></link>
 				<link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css"></link>
+				<script src="https://www.google.com/jsapi" type="text/javascript">
+				</script>
+				<script type="text/javascript">
+				    google.load("elements", "1", {
+				        packages: "transliteration"
+				    });
 
+				    function onLoad() {
+				        var options = {
+				            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+				            destinationLanguage: [google.elements.transliteration.LanguageCode.HINDI],
+				            shortcutKey: 'ctrl+g',
+				            transliterationEnabled: true
+				        };
+
+				        var control = new google.elements.transliteration.TransliterationControl(options);
+				        control.makeTransliteratable(['transliterateTextarea']);
+				    }
+				    google.setOnLoadCallback(onLoad);
+				</script>
 	</head>
 
 	<body id="sapthabody">
@@ -23,7 +42,7 @@
 
 				<hr/>-->
 
-				<div class="row" style="margin-top: 5px;">
+				<div class="row" style="margin-top: 50px;">
 					<bg-splitter orientation="horizontal">
     <bg-pane min-size="150" style="width: 25%;">
       <bg-splitter orientation="vertical">
@@ -70,8 +89,9 @@
 				<fieldset data-ng-repeat="chp in chps" on-last-repeat ng-show="chp.edit">
 					<bg-splitter orientation="mainhorz">
 				<bg-pane min-size="100" ng-class="class">
-					<form id="origform" class="orgform">
-					<textarea id="cont{{chp.id}}" class="orgtext kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" ></textarea>
+					<form id="origform" class="orgform Google-transliterate-Way2blogging" name="formchp" confirm-on-exit>
+					<!--<textarea id="cont{{chp.id}}" class="orgtext kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" data-hidden-buttons="cmdPreview" name="" ></textarea> -->
+					<textarea id="cont{{chp.id}}" class="orgtext kanni-enabled" my-lang ng-model="chp.content" data-provide="markdown" name="" ></textarea>
 			</form>
 				</bg-pane>
 				<bg-pane min-size="100" ng-show="liveprvw">
@@ -100,10 +120,12 @@
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<!--	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script> -->
 		<script src="https://code.angularjs.org/1.4.9/angular.min.js"></script>
-		<script src="https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.js"></script>
-			<!--	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
-				<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+		<script src="js/angular-modal-service.js"></script>
+		<!--<script src="https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.js"></script>
+				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+				<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script> -->
 				 <script src="js/markdown.js"></script>
+				 <script src="js/bootstrap.min.js"></script>
 					<script src="js/to-markdown.js"></script>
 					<script src="js/Markdown.Converter.js"></script>
 	<script src="js/Markdown.Sanitizer.js"></script>
@@ -119,6 +141,7 @@
 <script type="text/javascript" src="kanni/lang/tamil.js"></script>
 <script type="text/javascript" src="kanni/lang/telugu.js"></script>
 <script type="text/javascript" src="js/underscore.js"></script>
+<script type="text/javascript" src="js/angular-local-storage.js"></script>
 				<script type="text/javascript" src="js/script.js"></script>
 				<script src="js/splitter.js"></script>
 				<script type="text/ng-template" id="yesno.html">

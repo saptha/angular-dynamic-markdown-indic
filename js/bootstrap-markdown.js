@@ -1319,10 +1319,11 @@
           toggle: true,
           hotkey: 'Ctrl+P',
           title: 'Preview',
-          btnText: 'Preview',
-          btnClass: 'btn btn-primary btn-sm',
-          icon: { glyph: 'glyphicon glyphicon-search', fa: 'fa fa-search', 'fa-3': 'icon-search', octicons: 'octicon octicon-search' },
+          //btnText: 'Preview',
+          //btnClass: 'btn btn-primary btn-sm',
+          icon: { glyph: 'glyphicon glyphicon-eye-open', fa: 'fa fa-eye', 'fa-3': 'icon-search', octicons: 'octicon octicon-search' },
           callback: function(e){
+            /* commented by Saptha
             // Check the preview mode and toggle based on this flag
             var isPreview = e.$isPreview,content;
 
@@ -1338,6 +1339,9 @@
             } else {
               e.hidePreview();
             }
+            */
+            angular.element('#Sapthaelement').scope().toggleCustom();
+            angular.element('#Sapthaelement').scope().$apply();
           }
         }]
       }]
